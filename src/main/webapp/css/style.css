@@ -1,0 +1,11 @@
+@charset "UTF-8";
+
+#checkbox-list-container {
+	display: flex;
+	align-items: center;
+	border: 1px solid black;
+}
+
+#checkbox-list-title {
+	margin-right: 8px;
+}
