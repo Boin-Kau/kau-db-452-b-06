@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.omg.PortableServer.ID_ASSIGNMENT_POLICY_ID;
+
 import com.kau.db.entity.Employee;
 import com.kau.db.service.EmployeeService;
 
@@ -32,56 +34,6 @@ public class EmployeeListController extends HttpServlet {
 		String isSupervisor_ = request.getParameter("isSupervisor");
 		String isDepartment_ = request.getParameter("isDepartment");
 		
-//		String field = "all";
-//		if(field_ != null) {
-//			field = field_;
-//		}
-//		
-//		String query = "";
-//		if(query_ != null) {
-//			query = query_;
-//		}
-//		
-//		String isName = "off";
-//		if(isName_ != null) {
-//			isName = isName_;
-//		}
-//		
-//		String isSsn = "off";
-//		if(isSsn_ != null) {
-//			isSsn = isSsn_;
-//		}
-//		
-//		String isBdate = "off";
-//		if(isBdate_ != null) {
-//			isBdate = isBdate_;
-//		}
-//		
-//		String isAddress = "off";
-//		if(isAddress_ != null) {
-//			isAddress = isAddress_;
-//		}
-//		
-//		String isSex = "off";
-//		if(isSex_ != null) {
-//			isSex = isSex_;
-//		}
-//		
-//		String isSalary = "off";
-//		if(isSalary_ != null) {
-//			isSalary = isSalary_;
-//		}
-//		
-//		String isSupervisor = "off";
-//		if(isSupervisor_ != null) {
-//			isSupervisor = isSupervisor_;
-//		}
-//		
-//		String isDepartment = "off";
-//		if(isDepartment_ != null) {
-//			isDepartment = isDepartment_;
-//		}
-		
 		EmployeeService service = new EmployeeService();
 		List<Employee> employeeList;
 		if(field_ == null && query_ == null && isName_ == null && isSsn_ == null && isBdate_ == null && isAddress_ == null && isSex_ == null && isSalary_ == null && isSupervisor_ == null && isDepartment_ == null){
@@ -101,5 +53,44 @@ public class EmployeeListController extends HttpServlet {
 //		PrintWriter out = response.getWriter();
 //		out.print(employeeListString);
 //        out.flush();  
+	}
+	
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// insert, update, delete mode 
+		String cmd = request.getParameter("cmd");
+		// insert data
+		String fname = request.getParameter("fname");
+		String minit = request.getParameter("minit");
+		String lname = request.getParameter("lname");
+		String ssn = request.getParameter("ssn");
+		String bdate = request.getParameter("bdate");
+		String address = request.getParameter("address");
+		String sex = request.getParameter("sex");
+		String salary = request.getParameter("salary");
+		String super_ssn = request.getParameter("super_ssn");
+		String dno = request.getParameter("dno");
+		
+		// update, delete ssns
+		String[] updateIds = request.getParameterValues("update-id");
+		
+		
+		
+		switch(cmd) {
+			
+		
+		case "delete": 
+			EmployeeService service = new EmployeeService();
+			int [] ids = new int[updateIds.length];
+			for(int i = 0; i < updateIds.length; i++) {
+				ids[i] = Integer.parseInt(updateIds[i]);
+			}
+			int result = service.deleteEmployee(ids);
+			System.out.println(result);
+			break;
+		}
+		
+		response.sendRedirect("employee");
+	
 	}
 }

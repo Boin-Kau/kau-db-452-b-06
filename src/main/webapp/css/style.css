@@ -1,11 +1,52 @@
 @charset "UTF-8";
 
+h3, h4 {
+	padding: 0;
+	margin: 0;
+}
+
 #checkbox-list-container {
 	display: flex;
 	align-items: center;
-	border: 1px solid black;
+	
 }
 
 #checkbox-list-title {
 	margin-right: 8px;
 }
+
+#delete-button-container {
+	display: flex;
+	justify-content: space-between;
+}
+
+.label-width {
+	display: inline-block;
+	width: 100px
+}
+
+.p-8 {
+	padding: 8px;
+}
+
+.py-4{
+	padding: 4px 0;
+}
+
+.mr-12 {
+	margin-right: 12px;
+}
+
+.mb-8 {
+	margin-bottom: 8px;
+}
+
+.border-black {
+	border: 1px solid black;
+	
+}
+
+.temp-form-border {
+	border: 1px solid red;
+}
+

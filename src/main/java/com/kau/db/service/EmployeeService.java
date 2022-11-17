@@ -1,5 +1,6 @@
 package com.kau.db.service;
 
+import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -158,4 +159,45 @@ public class EmployeeService {
 		
 		return employeeList;
 	}
+
+
+
+	// 3. 검색된 직원을 선택하고 DB에서 삭제
+	public int deleteEmployee(int[] ids) {
+		
+		int result = 0; // 삭제한 Employee 데이터 개수
+		
+		String params = "";
+		
+		for(int i = 0; i < ids.length; i++) {
+			params += ids[i];
+			if(i < ids.length-1) {
+				params += ",";
+			}
+		}
+		
+		String sql = "DELETE FROM EMPLOYEE WHERE Ssn IN ("+params+")";
+		
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection connection = DriverManager.getConnection(url, user, password);
+			Statement st = connection.createStatement();
+			
+			result = st.executeUpdate(sql);
+			
+			st.close();
+			connection.close();
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
+		return result;
+	}
+	
+	// 5. 새로운 직원의 정보를 GUI 에서 직접 추가
+
 }
