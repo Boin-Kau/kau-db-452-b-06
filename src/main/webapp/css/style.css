@@ -15,9 +15,15 @@ h3, h4 {
 	margin-right: 8px;
 }
 
-#delete-button-container {
+#delete-container {
 	display: flex;
 	justify-content: space-between;
+}
+
+#update-container {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
 }
 
 .label-width {

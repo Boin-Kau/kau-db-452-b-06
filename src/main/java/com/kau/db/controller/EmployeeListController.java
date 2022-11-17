@@ -81,12 +81,14 @@ public class EmployeeListController extends HttpServlet {
 		employeeReq.setBdate(bdate);
 		employeeReq.setAddress(address);
 		employeeReq.setSex(sex);
-		employeeReq.setSalary(Double.parseDouble(salary));
+		if(salary!= null) employeeReq.setSalary(Double.parseDouble(salary));
 		employeeReq.setSuper_ssn(super_ssn);
-		employeeReq.setDno(Integer.parseInt(dno));
+		if(dno!= null) employeeReq.setDno(Integer.parseInt(dno));
 		
 		// update, delete ssns
-		String[] updateIds = request.getParameterValues("update-id");
+		String[] selectIds = request.getParameterValues("select-id");
+		String updateField = request.getParameter("update-field");
+		String updateQuery = request.getParameter("update-query");
 		
 		EmployeeService service = new EmployeeService();
 		
@@ -94,13 +96,19 @@ public class EmployeeListController extends HttpServlet {
 		case "insert":
 			int insertNum = service.insertEmployee(employeeReq);
 			break;
-			
-		case "delete": 
-			int [] ids = new int[updateIds.length];
-			for(int i = 0; i < updateIds.length; i++) {
-				ids[i] = Integer.parseInt(updateIds[i]);
+		case "update":
+			int [] updateIds = new int[selectIds.length];
+			for(int i = 0; i < selectIds.length; i++) {
+				updateIds[i] = Integer.parseInt(selectIds[i]);
 			}
-			int deleteNum = service.deleteEmployee(ids);
+			int updateNum = service.updateEmployee(updateIds, updateField, updateQuery);
+			break;
+		case "delete": 
+			int [] deleteIds = new int[selectIds.length];
+			for(int i = 0; i < selectIds.length; i++) {
+				deleteIds[i] = Integer.parseInt(selectIds[i]);
+			}
+			int deleteNum = service.deleteEmployee(deleteIds);
 			break;
 		}
 		

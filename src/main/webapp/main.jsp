@@ -15,7 +15,7 @@
 		
 		let names = [];
 
-		const checkboxList = document.getElementsByName('update-id');
+		const checkboxList = document.getElementsByName('select-id');
 		for(let i = 0; i < checkboxList.length; i++) {
 			console.log(i, '번 째:', checkboxList[i] );
 			console.log(i, '번 째 체크상태 :', checkboxList[i].checked );
@@ -85,7 +85,7 @@
 					pageContext.setAttribute("e", e);	
 				%>
 					<tr>
-						<td> <input type="checkbox" name="update-id" onclick="checkEmployee(this)" value="${e.ssn}"> </td>
+						<td> <input type="checkbox" name="select-id" onclick="checkEmployee(this)" value="${e.ssn}"> </td>
 						<td>${e.name}</td>
 						<td>${e.ssn}</td>
 						<td>${e.bDate}</td>
@@ -100,13 +100,23 @@
 			</table>
 			<div class="border-black p-8">
 				<h3 class="py-4">수정 및 삭제하기</h3>
-				<div id="delete-button-container" class="py-4">
+				<div id="delete-container" class="py-4">
 					<span>
 						<strong>선택한 직원: </strong>
 						<span id="who"></span>
 					</span>
 					
 					<input type="submit" name="cmd" value="delete" >
+				</div>
+				<div id="update-container">
+					<label class="mr-12" for="updateType">수정:</label>
+					<select class="mr-12" id="updateType" name="update-field">
+					    <option value="address">Address</option>
+					    <option value="sex">Sex</option>
+					    <option value="salary">Salary</option>
+					</select>
+					<input class="mr-12" type="text" value="" name="update-query">
+					<input type="submit" name="cmd" value="update">
 				</div>
 				
 			</div>

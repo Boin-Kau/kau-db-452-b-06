@@ -198,6 +198,46 @@ public class EmployeeService {
 		
 		return result;
 	}
+	
+	// 4. 검색된 직원을 선택하고, 수정할 항목 선택 후 수정사항을 입력하여 그 직원의 해당 항목 정보를 수정
+	public int updateEmployee(int[] updateIds, String field, String query) {
+		
+		int result = 0; 
+		
+		String sql = "UPDATE EMPLOYEE SET " + field + "= ? WHERE ssn = ?";
+		System.out.println(sql);
+		
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection connection = DriverManager.getConnection(url, user, password);
+			PreparedStatement st = connection.prepareStatement(sql);
+			
+			st.setString(1, query);
+			st.setInt(2, updateIds[0]);
+			
+			result = st.executeUpdate();
+			if(result == 1) {
+				System.out.println("update 성공"); // update 성공시 수정날짜 갱신
+	    		st = connection.prepareStatement("UPDATE EMPLOYEE SET modified = CURRENT_TIMESTAMP where ssn=?");
+	    		st.setInt(1, updateIds[0]);
+	    		st.executeUpdate();
+			} else {
+				System.out.println("update 실패");
+			}
+			
+			st.close();
+			connection.close();
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
+		return result;
+	}
+	
 
 	
 	// 5. 새로운 직원의 정보를 GUI 에서 직접 추가
@@ -240,5 +280,7 @@ public class EmployeeService {
 		
 		return result;
 	}
+
+	
 
 }
