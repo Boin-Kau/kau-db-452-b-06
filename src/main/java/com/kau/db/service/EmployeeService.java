@@ -14,6 +14,7 @@ import javax.activation.FileDataSource;
 import javax.jws.soap.SOAPBinding.Style;
 
 import com.kau.db.entity.Employee;
+import com.kau.db.entity.EmployeeReq;
 
 public class EmployeeService {
 	String url = "jdbc:mysql://umc-3rd-server-database.cv5p23dkqa5m.ap-northeast-2.rds.amazonaws.com:3306/db_term_project?serverTimezone=UTC";
@@ -197,7 +198,47 @@ public class EmployeeService {
 		
 		return result;
 	}
+
 	
 	// 5. 새로운 직원의 정보를 GUI 에서 직접 추가
+	public int insertEmployee(EmployeeReq employeeReq) {
+		
+		int result = 0;
+		
+		String sql = "INSERT INTO EMPLOYEE(Fname, Minit, Lname, Ssn, Bdate, Address, Sex, Salary, Super_ssn, Dno, created, modified) VALUES(?,?,?,?,?,?,?,?,?,?, CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)";
+		
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection connection = DriverManager.getConnection(url, user, password);
+			PreparedStatement st = connection.prepareStatement(sql);
+			st.setString(1, employeeReq.getFname());
+			st.setString(2, employeeReq.getMinit());
+			st.setString(3, employeeReq.getLname());
+			st.setString(4, employeeReq.getSsn());
+			st.setString(5, employeeReq.getBdate());
+			st.setString(6, employeeReq.getAddress());
+			st.setString(7, employeeReq.getSex());
+			st.setDouble(8, employeeReq.getSalary());
+			st.setString(9, employeeReq.getSuper_ssn());
+			st.setInt(10, employeeReq.getDno());
+			
+			result = st.executeUpdate();
+			if(result == 1) {
+				System.out.println("insert complete");
+			} else {
+				System.out.println("insert fail");
+			}
+			
+			st.close();
+			connection.close();
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
 
 }

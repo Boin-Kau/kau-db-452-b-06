@@ -2,6 +2,7 @@ package com.kau.db.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.omg.PortableServer.ID_ASSIGNMENT_POLICY_ID;
 
 import com.kau.db.entity.Employee;
+import com.kau.db.entity.EmployeeReq;
 import com.kau.db.service.EmployeeService;
 
 
@@ -71,22 +73,34 @@ public class EmployeeListController extends HttpServlet {
 		String super_ssn = request.getParameter("super_ssn");
 		String dno = request.getParameter("dno");
 		
+		EmployeeReq employeeReq = new EmployeeReq();
+		employeeReq.setFname(fname);
+		employeeReq.setMinit(minit);
+		employeeReq.setLname(lname);
+		employeeReq.setSsn(ssn);
+		employeeReq.setBdate(bdate);
+		employeeReq.setAddress(address);
+		employeeReq.setSex(sex);
+		employeeReq.setSalary(Double.parseDouble(salary));
+		employeeReq.setSuper_ssn(super_ssn);
+		employeeReq.setDno(Integer.parseInt(dno));
+		
 		// update, delete ssns
 		String[] updateIds = request.getParameterValues("update-id");
 		
-		
+		EmployeeService service = new EmployeeService();
 		
 		switch(cmd) {
+		case "insert":
+			int insertNum = service.insertEmployee(employeeReq);
+			break;
 			
-		
 		case "delete": 
-			EmployeeService service = new EmployeeService();
 			int [] ids = new int[updateIds.length];
 			for(int i = 0; i < updateIds.length; i++) {
 				ids[i] = Integer.parseInt(updateIds[i]);
 			}
-			int result = service.deleteEmployee(ids);
-			System.out.println(result);
+			int deleteNum = service.deleteEmployee(ids);
 			break;
 		}
 		
