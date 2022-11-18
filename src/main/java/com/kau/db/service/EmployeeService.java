@@ -12,6 +12,7 @@ import java.util.List;
 
 import javax.activation.FileDataSource;
 import javax.jws.soap.SOAPBinding.Style;
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.SystemMenuBar;
 
 import com.kau.db.entity.Employee;
 import com.kau.db.entity.EmployeeReq;
@@ -97,18 +98,31 @@ public class EmployeeService {
 			Connection connection = DriverManager.getConnection(url, user, password);
 			
 			String sql = "SELECT CONCAT(E.Fname,' ', E.Minit,' ', E.Lname,' ') AS Name, E.Ssn, E.Bdate, E.Address, E.Sex, E.Salary, CONCAT(S.Fname,' ', S.Minit,' ', S.Lname,' ') AS Supervisor, Dname";
-			sql += " FROM EMPLOYEE AS E left join EMPLOYEE AS S on E.Super_ssn =  S.Ssn left join DEPARTMENT AS D on E.Dno = D.Dnumber;";
-//			if(field != "all" && query.length() > 0) {
-//				
-//				
-////				if(field == "Department") {
-////					sql += "WHERE"
-////				}
-////				sql += " WHERE E.";
-////				sql += field; 
-////				sql += "=";
-////				sql += query;
-//			}
+			sql += " FROM EMPLOYEE AS E left join EMPLOYEE AS S on E.Super_ssn =  S.Ssn left join DEPARTMENT AS D on E.Dno = D.Dnumber";
+			
+			if(!field.equals("all") && field != null) {
+				switch (field) {
+				case "Dname":
+					sql += " WHERE " + field + "='" + query+"';";
+					break;
+				case "Sex":
+				case "Super_ssn":
+					sql += " WHERE E." + field + "='" + query+"';";
+					break;
+				case "Salary":
+					sql += " WHERE E." + field + "=" + query+";";
+					break;
+				case "Bdate":
+					sql += " WHERE E." + field + " LIKE " + "'_____" + query+"___';";
+					break;
+				default:
+					break;
+				}
+
+			} else {
+				sql += ";";
+			}
+			System.out.println(sql);
 			
 			PreparedStatement p = connection.prepareStatement(sql);
 			ResultSet r = p.executeQuery();

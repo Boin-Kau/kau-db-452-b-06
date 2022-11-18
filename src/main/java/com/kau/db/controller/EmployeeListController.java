@@ -25,8 +25,12 @@ public class EmployeeListController extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		String field_ = request.getParameter("field");
-		String query_ = request.getParameter("query");
+		String field_ = request.getParameter("search-field");
+		// System.out.println(field_);
+		
+		String query_ = request.getParameter("search-query");
+		// System.out.println(query_);
+		
 		String isName_ = request.getParameter("isName");
 		String isSsn_ = request.getParameter("isSsn");
 		String isBdate_ = request.getParameter("isBdate");

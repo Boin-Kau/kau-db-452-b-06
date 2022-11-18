@@ -5,13 +5,13 @@ h3, h4 {
 	margin: 0;
 }
 
-#checkbox-list-container {
+.search-list-container {
 	display: flex;
 	align-items: center;
 	
 }
 
-#checkbox-list-title {
+.search-list-title {
 	margin-right: 8px;
 }
 
