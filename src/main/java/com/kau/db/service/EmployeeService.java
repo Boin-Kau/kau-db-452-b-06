@@ -14,8 +14,10 @@ import javax.activation.FileDataSource;
 import javax.jws.soap.SOAPBinding.Style;
 import javax.swing.plaf.basic.BasicInternalFrameTitlePane.SystemMenuBar;
 
+import com.kau.db.entity.Dependent;
 import com.kau.db.entity.Employee;
 import com.kau.db.entity.EmployeeReq;
+import com.oracle.wls.shaded.org.apache.xpath.operations.And;
 
 public class EmployeeService {
 	String url = "jdbc:mysql://umc-3rd-server-database.cv5p23dkqa5m.ap-northeast-2.rds.amazonaws.com:3306/db_term_project?serverTimezone=UTC";
@@ -294,7 +296,50 @@ public class EmployeeService {
 		
 		return result;
 	}
-
 	
+	// 7. 직원별 가족을 모두 출력하기 
+	public List<Dependent> getDependentList(String ssn) {
+		List<Dependent> dependentList = new ArrayList<>();
+		
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection connection = DriverManager.getConnection(url, user, password);
+			
+			String sql = "SELECT D.Dependent_name, D.Sex, D.Bdate, D.Relationship FROM EMPLOYEE, DEPENDENT AS D WHERE Essn = Ssn AND Ssn = ?";
+			PreparedStatement p = connection.prepareStatement(sql);
+			
+			p.setString(1, ssn);
+			ResultSet r = p.executeQuery();
+			
+			while(r.next()) {
+				String name = r.getString("D.Dependent_name");
+				String sex = r.getString("D.Sex");
+				Date bDate = r.getDate("D.Bdate");
+				String relationship = r.getString("D.Relationship");
+				
+				Dependent dependent = new Dependent(
+						name,
+						sex,
+						bDate,
+						relationship
+				);
+				
+				dependentList.add(dependent);
+			}
+			
+			r.close();
+			p.close();
+			connection.close();
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
+		
+		return dependentList;
+	}
 
 }

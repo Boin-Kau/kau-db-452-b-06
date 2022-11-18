@@ -1,3 +1,4 @@
+<%@page import="com.kau.db.entity.Dependent"%>
 <%@page import="com.kau.db.entity.Employee"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -127,7 +128,7 @@
 			
 			<label for="checkboxDepartment">Department</label>
 			<input class="mr-12 cb" type="checkbox" checked="checked" name="isDepartment" id="checkboxDepartment"> 
-			<input type="submit" value="search"> 
+			<input type="submit" name="cmd" value="search-employee"> 
 		</div>
 		
 	</form>
@@ -154,6 +155,7 @@
 				<tbody align="center">
 				<% 
 				List<Employee> employeeList = (List<Employee>) request.getAttribute("employeeList");
+				if(employeeList != null) {
 				for(Employee e : employeeList){
 					pageContext.setAttribute("e", e);	
 				%>
@@ -168,7 +170,7 @@
 						<td>${e.supervisor}</td>
 						<td>${e.dName}</td>
 					</tr>
-				<% }%>
+				<% }}%>
 				</tbody>
 			</table>
 			<div class="border-black p-8">
@@ -255,6 +257,41 @@
 			<input type="submit" name="cmd" value="insert">
 			
 		</form>
+	</div>
+	<div class="border-black p-8">
+		<form action="employee" method="get" class="mb-8">
+			<h3 class="mb-8">직원별 가족 검색</h3>
+			
+			<label for="Ssn-for-dependent">Ssn</label>
+			<input type="text" id="Ssn-for-dependent" name="Ssn" value="">
+			
+			<input type="submit" name="cmd" value="search-dependent"> 
+		</form>
+		<table border="1" width="1000">
+			<thead align="center">
+				<tr>
+					<th> Dependent Name </th>
+					<th> Sex </th>
+					<th> BDATE </th>
+					<th> Relationship </th>
+				</tr>
+			</thead>
+			<tbody align="center">
+			<% 
+			List<Dependent> dependentList = (List<Dependent>) request.getAttribute("dependentList");
+			if(dependentList != null) { 
+			for(Dependent d : dependentList){
+				pageContext.setAttribute("d", d);	
+			%>
+				<tr>
+					<td>${d.name}</td>
+					<td>${d.sex}</td>
+					<td>${d.bDate}</td>
+					<td>${d.relationship}</td>
+				</tr>
+			<% }}%>
+			</tbody>
+		</table>
 	</div>
 </body>
 </html>

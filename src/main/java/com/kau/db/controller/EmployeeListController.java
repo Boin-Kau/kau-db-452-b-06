@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.omg.PortableServer.ID_ASSIGNMENT_POLICY_ID;
 
+import com.kau.db.entity.Dependent;
 import com.kau.db.entity.Employee;
 import com.kau.db.entity.EmployeeReq;
 import com.kau.db.service.EmployeeService;
@@ -24,13 +25,13 @@ public class EmployeeListController extends HttpServlet {
 	
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// search-employee, search-dependent mode
+		String cmd = request.getParameter("cmd");
+		if(cmd == null) cmd = "search-employee";
 		
+		// search employee
 		String field_ = request.getParameter("search-field");
-		// System.out.println(field_);
-		
 		String query_ = request.getParameter("search-query");
-		// System.out.println(query_);
-		
 		String isName_ = request.getParameter("isName");
 		String isSsn_ = request.getParameter("isSsn");
 		String isBdate_ = request.getParameter("isBdate");
@@ -40,15 +41,33 @@ public class EmployeeListController extends HttpServlet {
 		String isSupervisor_ = request.getParameter("isSupervisor");
 		String isDepartment_ = request.getParameter("isDepartment");
 		
+		// search dependent
+		String ssn = request.getParameter("Ssn");
+		
 		EmployeeService service = new EmployeeService();
-		List<Employee> employeeList;
-		if(field_ == null && query_ == null && isName_ == null && isSsn_ == null && isBdate_ == null && isAddress_ == null && isSex_ == null && isSalary_ == null && isSupervisor_ == null && isDepartment_ == null){
-			employeeList = service.getEmployeeList();
-		} else {
-			employeeList = service.getEmployeeList(field_, query_, isName_, isSsn_, isBdate_, isAddress_, isSex_, isSalary_, isSupervisor_, isDepartment_);
+		
+		switch(cmd) {
+		case "search-employee":
+			List<Employee> employeeList;
+			if(field_ == null && query_ == null && isName_ == null && isSsn_ == null && isBdate_ == null && isAddress_ == null && isSex_ == null && isSalary_ == null && isSupervisor_ == null && isDepartment_ == null){
+				employeeList = service.getEmployeeList();
+			} else {
+				employeeList = service.getEmployeeList(field_, query_, isName_, isSsn_, isBdate_, isAddress_, isSex_, isSalary_, isSupervisor_, isDepartment_);
+			}
+			
+			request.setAttribute("employeeList", employeeList);
+			break;
+		
+		case "search-dependent":
+			List<Dependent> dependentList;
+			dependentList = service.getDependentList(ssn);
+			
+			request.setAttribute("dependentList", dependentList);
+			break;
+		default:
+			break;
 		}
 		
-		request.setAttribute("employeeList", employeeList);
 		
 		// forward
 		request.getRequestDispatcher("/main.jsp").forward(request, response);
