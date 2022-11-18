@@ -193,6 +193,17 @@
 					<input class="mr-12" type="text" value="" name="update-query">
 					<input type="submit" name="cmd" value="update">
 				</div>
+				<div class="mt-24">
+					<strong>부서별 월급 수정: </strong>
+					<select name="update-department">
+						<option value="Headquarters">Headquarters</option>
+					    <option value="Administration">Administration</option>
+					    <option value="Research">Research</option>
+					</select>
+					
+					<input type="text" value=""  name="update-salary">
+					<input type="submit" name="cmd" value="update-salary-by-department">
+				</div>
 				
 			</div>
 		</form>

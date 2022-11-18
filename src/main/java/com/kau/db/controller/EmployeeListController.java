@@ -113,6 +113,11 @@ public class EmployeeListController extends HttpServlet {
 		String updateField = request.getParameter("update-field");
 		String updateQuery = request.getParameter("update-query");
 		
+		// update salary by department
+		String departmentName = request.getParameter("update-department");
+		String departmentSalary = request.getParameter("update-salary");
+		
+		
 		EmployeeService service = new EmployeeService();
 		
 		switch(cmd) {
@@ -132,6 +137,9 @@ public class EmployeeListController extends HttpServlet {
 				deleteIds[i] = Integer.parseInt(selectIds[i]);
 			}
 			int deleteNum = service.deleteEmployee(deleteIds);
+			break;
+		case "update-salary-by-department":
+			int updateNum2 = service.updateSalaryByDepartment(departmentName, departmentSalary);
 			break;
 		}
 		

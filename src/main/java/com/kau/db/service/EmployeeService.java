@@ -221,7 +221,6 @@ public class EmployeeService {
 		int result = 0; 
 		
 		String sql = "UPDATE EMPLOYEE SET " + field + "= ? WHERE ssn = ?";
-		System.out.println(sql);
 		
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -337,9 +336,43 @@ public class EmployeeService {
 			e.printStackTrace();
 		}
 		
-		
-		
 		return dependentList;
+	}
+
+	// 8. 부서별로 월급 일괄 수정하기
+	public int updateSalaryByDepartment(String departmentName, String departmentSalary) {
+		int result = 0;
+		
+		String sql = "UPDATE (EMPLOYEE left join DEPARTMENT on Dnumber = Dno) SET Salary = ? WHERE Dname = ?;";
+		
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection connection = DriverManager.getConnection(url, user, password);
+			PreparedStatement st = connection.prepareStatement(sql);
+			
+			st.setDouble(1, Double.parseDouble(departmentSalary));
+			st.setString(2, departmentName);
+			
+			result = st.executeUpdate();
+			if(result == 1) {
+				System.out.println("update 성공"); // update 성공시 수정날짜 갱신
+	    		st = connection.prepareStatement("UPDATE (EMPLOYEE left join DEPARTMENT on Dnumber = Dno) SET modified = CURRENT_TIMESTAMP where Dname = ?");
+	    		st.setString(1, departmentName);
+	    		st.executeUpdate();
+			} else {
+				System.out.println("update 실패");
+			}
+			
+			st.close();
+			connection.close();
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
 	}
 
 }
