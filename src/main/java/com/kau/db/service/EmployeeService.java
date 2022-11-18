@@ -202,6 +202,20 @@ public class EmployeeService {
 			
 			result = st.executeUpdate(sql);
 			
+			if(result != 0) {
+				String sql2 = "DELETE FROM WORKS_ON WHERE Essn IN ("+params+")";
+				st.executeUpdate(sql2);
+				
+				String sql3 = "DELETE FROM DEPENDENT WHERE Essn IN ("+params+")";
+				st.executeUpdate(sql3);
+				
+				String sql4 = "UPDATE DEPARTMENT SET Mgr_ssn='vacancy' WHERE Mgr_ssn IN ("+params+")";
+				st.executeUpdate(sql4);
+				
+				String sql5 = "UPDATE EMPLOYEE SET Super_ssn=NULL WHERE Super_ssn IN ("+params+")";
+				st.executeUpdate(sql5);
+			}
+			
 			st.close();
 			connection.close();
 			
@@ -210,7 +224,6 @@ public class EmployeeService {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
 		
 		return result;
 	}
@@ -354,7 +367,7 @@ public class EmployeeService {
 			st.setString(2, departmentName);
 			
 			result = st.executeUpdate();
-			if(result == 1) {
+			if(result >= 1) {
 				System.out.println("update 성공"); // update 성공시 수정날짜 갱신
 	    		st = connection.prepareStatement("UPDATE (EMPLOYEE left join DEPARTMENT on Dnumber = Dno) SET modified = CURRENT_TIMESTAMP where Dname = ?");
 	    		st.setString(1, departmentName);
