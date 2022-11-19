@@ -214,6 +214,9 @@ public class EmployeeService {
 				
 				String sql5 = "UPDATE EMPLOYEE SET Super_ssn=NULL WHERE Super_ssn IN ("+params+")";
 				st.executeUpdate(sql5);
+				
+				String sql6 = "UPDATE EMPLOYEE SET modified = CURRENT_TIMESTAMP Super_ssn IN ("+params+")";
+				st.executeUpdate(sql6);
 			}
 			
 			st.close();
