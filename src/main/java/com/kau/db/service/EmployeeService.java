@@ -112,7 +112,7 @@ public class EmployeeService {
 					sql += " WHERE E." + field + "='" + query+"';";
 					break;
 				case "Salary":
-					sql += " WHERE E." + field + "=" + query+";";
+					sql += " WHERE E." + field + ">" + query+";";
 					break;
 				case "Bdate":
 					sql += " WHERE E." + field + " LIKE " + "'_____" + query+"___';";
