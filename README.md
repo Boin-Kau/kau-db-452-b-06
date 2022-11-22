@@ -14,6 +14,7 @@
   
 ## 프로젝트 설명
 ### 프로젝트 구조
+![db-architecture](./img/db-architecture.png)
 ```text
 kau-db-term-project
   > build
