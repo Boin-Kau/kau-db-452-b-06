@@ -22,10 +22,14 @@ kau-db-term-project
       | EmployeeListController.java 
     > entity
       | Employee.java 
+      | EmployeeReq.java 
+      | Dependent.java 
     > filter
       | CharacterEncodingFilter.java 
     > service
       | EmployeeService.java 
+  > src.main.java.webapp
+      | main.jsp
   > .gitignore // git 에 포함되지 않아야 하는 폴더, 파일들을 작성 해놓는 곳
 ```
 ### 상세 설명
@@ -49,4 +53,4 @@ kau-db-term-project
 ### 버전 관리
 - Java : openjdk version "1.8.0_292"
 - MySQL Connector : mysql-connector-java-8.0.28.jar
-- Gson : gson-2.10.jar
+- Tomcat : v9
